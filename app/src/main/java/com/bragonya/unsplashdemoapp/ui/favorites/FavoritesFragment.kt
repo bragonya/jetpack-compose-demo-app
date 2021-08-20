@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
@@ -63,8 +62,8 @@ fun Favorites(
                     lazyPages.value.filter { image ->
                         val text = searchText.value.text
                         (text.isEmpty()
-                                || image.description?.contains(text) == true
-                                || image.altDescription?.contains(text) == true) || image.user.name.contains(text)
+                                || image.description?.contains(text, ignoreCase = true) == true
+                                || image.altDescription?.contains(text, ignoreCase = true) == true) || image.user.name.contains(text, ignoreCase = true)
                     }
                     , viewModel
                 )
