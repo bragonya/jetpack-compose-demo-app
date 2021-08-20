@@ -1,5 +1,9 @@
 package com.bragonya.unsplashdemoapp
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.junit.Test
 
 import org.junit.Assert.*

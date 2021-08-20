@@ -8,7 +8,9 @@ import com.bragonya.unsplashdemoapp.models.ImageRoot
 import com.bragonya.unsplashdemoapp.network.UnsplashAPI
 import com.bragonya.unsplashdemoapp.persistency.AppDatabase
 import com.bragonya.unsplashdemoapp.persistency.FavoritesDataBase
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.withContext
@@ -30,10 +32,11 @@ class UnsplashRepository @Inject constructor(
         }
     }
 
-    fun observeFavs() = favoritesDataBase
+    fun observeFavs(coroutineScope: CoroutineScope) = favoritesDataBase
         .favoritesDAO()
         .observeFavsChanges()
         .distinctUntilChanged()
+        .shareIn(coroutineScope, started = SharingStarted.Eagerly)
 
     suspend fun addFavorite(imageRoot: ImageRoot) = withContext(Dispatchers.IO) {
         favoritesDataBase.favoritesDAO().addFav(imageRoot)
