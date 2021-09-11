@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
@@ -18,12 +20,8 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.paging.compose.collectAsLazyPagingItems
-import com.bragonya.unsplashdemoapp.databinding.FragmentFavoritesBinding
 import com.bragonya.unsplashdemoapp.ui.SharedViewModel
-import com.bragonya.unsplashdemoapp.ui.composables.ImageList
+import com.bragonya.unsplashdemoapp.ui.composables.ItemList
 import com.bragonya.unsplashdemoapp.ui.composables.SearchView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -58,15 +56,23 @@ fun Favorites(
             val searchText = remember { mutableStateOf(TextFieldValue("")) }
             Column {
                 SearchView(state = searchText)
-                ImageList(
-                    lazyPages.value.filter { image ->
+                LazyColumn {
+                    items(lazyPages.value.filter { image ->
                         val text = searchText.value.text
                         (text.isEmpty()
                                 || image.description?.contains(text, ignoreCase = true) == true
                                 || image.altDescription?.contains(text, ignoreCase = true) == true) || image.user.name.contains(text, ignoreCase = true)
+                    }) { image ->
+                        val isFavorite = viewModel.isFavorite(image)
+                        ItemList(image, isFavorite){ value ->
+                            if (value) {
+                                viewModel.addFavorite(image)
+                            } else {
+                                viewModel.removeFavorite(image)
+                            }
+                        }
                     }
-                    , viewModel
-                )
+                }
             }
 
         }

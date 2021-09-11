@@ -15,6 +15,11 @@ import javax.inject.Inject
 @HiltViewModel
 class SharedViewModel @Inject constructor(private val repository: UnsplashRepository) : ViewModel() {
     private val internalFavsCache = MutableStateFlow(mapOf<String, ImageRoot>())
+    val favsCache =    internalFavsCache.stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            emptyMap()
+        )
 
     var job: Job? = null
     init {

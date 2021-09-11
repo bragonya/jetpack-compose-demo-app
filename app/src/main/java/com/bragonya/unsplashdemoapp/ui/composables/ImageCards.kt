@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
@@ -32,53 +33,8 @@ import com.bragonya.unsplashdemoapp.ui.SharedViewModel
 import com.bragonya.unsplashdemoapp.utils.Fakes
 import com.skydoves.landscapist.coil.CoilImage
 
-
 @Composable
-fun ImageList(
-    lazyPages: LazyPagingItems<ImageRoot>,
-    viewModel: SharedViewModel,
-) {
-    LazyColumn {
-        items(lazyPages) { image ->
-            image?.let {
-                val isFavorite = remember {
-                    mutableStateOf(viewModel.isFavorite(image))
-                }
-                ItemList(image, isFavorite.value){ value ->
-                    isFavorite.value = value
-                    if (value) {
-                        viewModel.addFavorite(image)
-                    } else {
-                        viewModel.removeFavorite(image)
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun ImageList(
-    lazyPages: List<ImageRoot>,
-    viewModel: SharedViewModel,
-) {
-    LazyColumn {
-        items(lazyPages) { image ->
-            val isFavorite = mutableStateOf(viewModel.isFavorite(image))
-            ItemList(image, isFavorite.value){ value ->
-                isFavorite.value = value
-                if (value) {
-                    viewModel.addFavorite(image)
-                } else {
-                    viewModel.removeFavorite(image)
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun ItemList(
+fun ItemList(
     image: ImageRoot,
     isFavorite: Boolean,
     isFavCallback: (value: Boolean) -> Unit
@@ -167,12 +123,9 @@ fun CardImage(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Icon(
-                        painter = image,
-                        contentDescription = "choose this image a fav",
-                        Modifier.clickable(enabled = true) {
-                            isFavCallback(!isFav)
-                        }
+                    FavoriteButton(
+                        isChecked = isFav,
+                        onClick = isFavCallback
                     )
                     Text(
                         imageRoot.likes.toString(),
