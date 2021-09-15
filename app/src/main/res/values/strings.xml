@@ -2,4 +2,5 @@
     <string name="app_name">UnsplashDemoApp</string>
     <string name="favorites">Favorites</string>
     <string name="images">Images</string>
+    <string name="detail">Detail Screen</string>
 </resources>

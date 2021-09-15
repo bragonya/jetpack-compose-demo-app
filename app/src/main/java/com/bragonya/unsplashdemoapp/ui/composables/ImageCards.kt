@@ -37,13 +37,15 @@ import com.skydoves.landscapist.coil.CoilImage
 fun ItemList(
     image: ImageRoot,
     isFavorite: Boolean,
-    isFavCallback: (value: Boolean) -> Unit
+    isFavCallback: (value: Boolean) -> Unit,
+    onClick: () -> Unit
 ) {
 
         CardImage(
             image,
             isFavorite,
-            isFavCallback
+            isFavCallback,
+            onClick
         )
 }
 
@@ -51,20 +53,16 @@ fun ItemList(
 fun CardImage(
     imageRoot: ImageRoot,
     isFav: Boolean,
-    isFavCallback: (value: Boolean) -> Unit
+    isFavCallback: (value: Boolean) -> Unit,
+    click: () -> Unit
 ){
-    val image = painterResource(
-        if(isFav)
-            R.drawable.ic_baseline_favorite_24
-        else
-            R.drawable.ic_baseline_favorite_border_24
-    )
     Card(
         elevation = 8.dp,
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight(align = Alignment.Top)
             .padding(8.dp)
+            .clickable(onClick = click)
     ) {
         Column(
             verticalArrangement = Arrangement.Center
@@ -140,5 +138,5 @@ fun CardImage(
 @Preview
 @Composable
 fun DefaultPreview(){
-    CardImage(Fakes.getDummyUser(), false) { value ->  println(value)}
+    CardImage(Fakes.getDummyUser(), false, isFavCallback = { value ->  println(value)}) { println("Item clicked!") }
 }
