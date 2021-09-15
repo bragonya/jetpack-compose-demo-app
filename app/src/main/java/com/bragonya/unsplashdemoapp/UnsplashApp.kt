@@ -6,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Dangerous
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -34,7 +35,7 @@ fun UnsplashApp(sharedViewModel: SharedViewModel){
         Scaffold(
             scaffoldState = scaffoldState,
             bottomBar = {
-                if (currentRoute(navController) != "detail") {
+                if (currentRoute(navController) != Screen.Detail.route) {
                     BottomNavigation {
                         val navBackStackEntry by navController.currentBackStackEntryAsState()
                         val currentDestination = navBackStackEntry?.destination
@@ -66,13 +67,20 @@ fun UnsplashApp(sharedViewModel: SharedViewModel){
                 }
             }
         ) { innerPadding ->
+            val actions = remember(navController) { MainActions(navController) }
             NavHost(navController, startDestination = Screen.Images.route, Modifier.padding(innerPadding) ) {
                 composable(Screen.Images.route) { HomeView(sharedViewModel, navController) }
                 composable(Screen.Favorites.route) { FavoritesView(sharedViewModel, navController) }
-                composable(Screen.Detail.route) { DetailView() }
+                composable(Screen.Detail.route) { DetailView(actions.upPress) }
             }
         }
 
+    }
+}
+
+class MainActions(navController: NavHostController) {
+    val upPress: () -> Unit = {
+        navController.navigateUp()
     }
 }
 
