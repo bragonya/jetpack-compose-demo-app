@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -33,27 +34,34 @@ fun UnsplashApp(sharedViewModel: SharedViewModel){
         Scaffold(
             scaffoldState = scaffoldState,
             bottomBar = {
-                BottomNavigation {
-                    val navBackStackEntry by navController.currentBackStackEntryAsState()
-                    val currentDestination = navBackStackEntry?.destination
+                if (currentRoute(navController) != "detail") {
+                    BottomNavigation {
+                        val navBackStackEntry by navController.currentBackStackEntryAsState()
+                        val currentDestination = navBackStackEntry?.destination
 
-                    items.forEach{ screen ->
-                        BottomNavigationItem(
-                            icon = { Icon(screen.icon ?: Icons.Filled.Dangerous, contentDescription = null) },
-                            label = { Text(stringResource(screen.resourceId)) },
-                            selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
-                            onClick = {
-                                navController.navigate(screen.route) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
+                        items.forEach { screen ->
+                            BottomNavigationItem(
+                                icon = {
+                                    Icon(
+                                        screen.icon ?: Icons.Filled.Dangerous,
+                                        contentDescription = null
+                                    )
+                                },
+                                label = { Text(stringResource(screen.resourceId)) },
+                                selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                                onClick = {
+                                    navController.navigate(screen.route) {
+                                        popUpTo(navController.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+
+                                        launchSingleTop = true
+
+                                        restoreState = true
                                     }
-
-                                    launchSingleTop = true
-
-                                    restoreState = true
                                 }
-                            }
-                        )
+                            )
+                        }
                     }
                 }
             }
@@ -63,8 +71,13 @@ fun UnsplashApp(sharedViewModel: SharedViewModel){
                 composable(Screen.Favorites.route) { FavoritesView(sharedViewModel, navController) }
                 composable(Screen.Detail.route) { DetailView() }
             }
-
         }
 
     }
+}
+
+@Composable
+fun currentRoute(navController: NavHostController): String? {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    return navBackStackEntry?.destination?.route
 }
