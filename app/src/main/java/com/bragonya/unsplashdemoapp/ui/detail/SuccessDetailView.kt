@@ -41,7 +41,12 @@ import com.skydoves.landscapist.coil.CoilImage
 import kotlin.math.roundToInt
 
 @Composable
-fun SuccessDetailView(upPress: () -> Unit, imageRoot: ImageRoot) {
+fun SuccessDetailView(
+    upPress: () -> Unit,
+    imageRoot: ImageRoot,
+    isFavorite: Boolean,
+    isFavoriteCallback: (Boolean) -> Unit
+) {
     val toolbarHeight = 46.dp
 
     val scrollState = rememberLazyListState()
@@ -92,8 +97,8 @@ fun SuccessDetailView(upPress: () -> Unit, imageRoot: ImageRoot) {
                     val fabOffset = -fabSize / 2
 
                     FavoriteButton(
-                        isChecked = false,
-                        onClick = {},
+                        isChecked = isFavorite,
+                        onClick = isFavoriteCallback,
                         modifier = Modifier
                             .padding(end = 8.dp)
                             .size(fabSize)
@@ -241,7 +246,9 @@ val LazyListState.isScrolled: Boolean
 fun PreviewDetailScreen(){
     SuccessDetailView(
         upPress = {},
-        imageRoot = Fakes.getDummyImageRoot()
+        imageRoot = Fakes.getDummyImageRoot(),
+        true,
+        {}
     )
 }
 

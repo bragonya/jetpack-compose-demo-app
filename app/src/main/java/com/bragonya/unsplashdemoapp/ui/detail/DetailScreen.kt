@@ -13,10 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,11 +48,18 @@ fun DetailView(
 
 
     val image = detailScreenViewModel.imageStateFlow.collectAsState()
+    val isFavorite by detailScreenViewModel.favsCache.collectAsState()
 
     when(val state = image.value){
         is DetailStates.Error -> Text(text = "Error ${state.e}")
         is DetailStates.Loading -> Text(text = "Loading")
-        is DetailStates.Success -> SuccessDetailView(upPress, state.imageRoot)
+        is DetailStates.Success -> SuccessDetailView(upPress, state.imageRoot, isFavorite.containsKey(state.imageRoot.id)){ value ->
+            if (value) {
+                detailScreenViewModel.addFavorite(state.imageRoot)
+            } else {
+                detailScreenViewModel.removeFavorite(state.imageRoot)
+            }
+        }
     }
 
 
