@@ -1,6 +1,5 @@
 package com.bragonya.unsplashdemoapp.ui
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bragonya.unsplashdemoapp.common.DEFAULT_PAGE_SIZE
@@ -9,7 +8,10 @@ import com.bragonya.unsplashdemoapp.repositories.UnsplashRepository
 import com.bragonya.unsplashdemoapp.ui.detail.DetailStates
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -39,7 +41,6 @@ class SharedViewModel @Inject constructor(private val repository: UnsplashReposi
     fun getImages() = repository.observeNewsListPaginated(DEFAULT_PAGE_SIZE)
 
     fun getImage(imageId: String) = viewModelScope.launch {
-        Log.d("bragonyaurl", "$imageId")
         try {
             imageStateFlow.tryEmit(DetailStates.Success(repository.getImage(imageId)))
         }catch (e: Throwable){
