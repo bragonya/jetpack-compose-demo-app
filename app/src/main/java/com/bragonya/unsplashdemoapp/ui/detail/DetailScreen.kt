@@ -1,5 +1,6 @@
 package com.bragonya.unsplashdemoapp.ui.detail
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -31,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.bragonya.unsplashdemoapp.R
-import com.bragonya.unsplashdemoapp.models.ImageRoot
+import com.bragonya.unsplashdemoapp.ui.composables.FavoriteButton
 import com.bragonya.unsplashdemoapp.ui.composables.InsetAwareTopAppBar
 import com.skydoves.landscapist.coil.CoilImage
 import kotlin.math.roundToInt
@@ -76,13 +77,30 @@ fun DetailView(
             }
 
             item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(4.dp)),
-                    elevation = 4.dp,
-                ) {
-                    ImageInformation()
+                Box {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(4.dp)),
+                        elevation = 4.dp,
+                    ) {
+                        ImageInformation()
+                    }
+                    val fabSize = 62.dp
+                    val fabOffset = - fabSize/2
+
+                    FavoriteButton(
+                        isChecked = false,
+                        onClick = {},
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .size(fabSize)
+                            .offset(y = fabOffset)
+                            .align(Alignment.TopEnd)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colors.primary),
+                        iconBorderColor = Color.White
+                    )
                 }
             }
         }
@@ -135,11 +153,10 @@ fun ImageInformation(){
         Modifier
             .background(Color.White)
     ) {
-        InformationImageCell(dataName = "Name", dataValue = "Peter")
-        InformationImageCell(dataName = "Last Name", dataValue = "Godinez")
-        InformationImageCell(dataName = "Image Name", dataValue = "Portrait of Suiza")
-        InformationImageCell(dataName = "Likes", dataValue = "18")
-        InformationImageCell(dataName = "Date", dataValue = "13/11/2020")
+        InformationImageCell(dataName = stringResource(R.string.image_description), dataValue = "Portrait of Suiza")
+        InformationImageCell(dataName = stringResource(R.string.image_likes), dataValue = "18")
+        InformationImageCell(dataName = stringResource(R.string.image_date), dataValue = "Jan 18")
+        InformationSocialMedia(twitter = "bragonya", instagram = "yaquigol")
     }
 }
 
@@ -164,6 +181,46 @@ fun InformationImageCell(dataName: String, dataValue: String){
     }
 }
 
+@Composable
+fun InformationSocialMedia(twitter: String?, instagram: String?){
+    Divider(color = Color.LightGray, thickness = 1.dp)
+
+    Column (
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(enabled = true) {}
+            .padding(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = stringResource(R.string.user_social_media),
+            style = MaterialTheme.typography.caption,
+        )
+        SocialMediaItem(stringResource(R.string.twitter_name), R.drawable.ic_twitter, twitter)
+        SocialMediaItem(stringResource(R.string.instagram_name), R.drawable.ic_instagramicon, instagram)
+    }
+}
+
+@Composable
+private fun SocialMediaItem(socialMedia: String, @DrawableRes socialMediaIcon: Int, socialMediaValue: String?) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            painter = painterResource(id = socialMediaIcon),
+            tint= Color.Unspecified,
+            contentDescription = "$socialMedia Icon",
+            modifier = Modifier
+                .padding(end = 8.dp)
+                .size(24.dp)
+        )
+        Text(
+            text = socialMediaValue ?: stringResource(R.string.no_resource_found),
+            style = MaterialTheme.typography.h5
+        )
+    }
+}
+
 val LazyListState.isScrolled: Boolean
     get() = firstVisibleItemIndex > 0 || firstVisibleItemScrollOffset > 0
 
@@ -171,7 +228,7 @@ val LazyListState.isScrolled: Boolean
 @Preview
 @Composable
 fun PreviewDetailScreen(){
-    DetailView({})
+    DetailView(upPress = {})
 }
 
 @Preview

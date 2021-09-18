@@ -4,4 +4,11 @@
     <string name="images">Images</string>
     <string name="detail">Detail Screen</string>
     <string name="detail_title">Image posted by: \n%1$s</string>
+    <string name="no_resource_found">No data found</string>
+    <string name="user_social_media">Social Media</string>
+    <string name="instagram_name">Instagram</string>
+    <string name="twitter_name">Twitter</string>
+    <string name="image_likes">Likes</string>
+    <string name="image_description">Image description</string>
+    <string name="image_date">Date</string>
 </resources>

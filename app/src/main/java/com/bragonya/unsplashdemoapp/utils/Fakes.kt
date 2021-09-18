@@ -22,7 +22,11 @@ object Fakes {
             "Brayan Yaquian",
             ProfileImage(
                 "https://images.unsplash.com/profile-1588262339016-ec5fb24daef6image?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=32&w=32",
-            )
-        )
+            ),
+            "bragonya.com",
+            "bragonya",
+            "yaquigol",
+        ),
+        createdAt = "2021-09-17T09:08:57-04:00"
     )
 }

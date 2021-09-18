@@ -15,4 +15,5 @@ data class ImageRoot(
     @Embedded val urls: Urls,
     val likes: Int,
     @Embedded val user: User,
+    @SerializedName("created_at") val createdAt: String,
 )

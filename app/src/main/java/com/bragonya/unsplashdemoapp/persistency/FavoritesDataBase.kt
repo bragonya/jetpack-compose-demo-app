@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.bragonya.unsplashdemoapp.models.ImageRoot
 import com.bragonya.unsplashdemoapp.models.RemoteKeys
 
-@Database(entities = arrayOf(ImageRoot::class), version = 1)
+@Database(entities = arrayOf(ImageRoot::class), version = 2)
 abstract class FavoritesDataBase : RoomDatabase() {
     abstract fun favoritesDAO(): FavoritesDAO
 }
