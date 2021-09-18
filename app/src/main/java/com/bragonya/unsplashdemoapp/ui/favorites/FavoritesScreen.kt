@@ -49,7 +49,7 @@ fun FavoritesView(
                                 viewModel.removeFavorite(image)
                             }
                         }){
-                            navController.navigate("detail")
+                            navController.navigate("detail/${image.id}")
                         }
                     }
                 }

@@ -1,5 +1,6 @@
 package com.bragonya.unsplashdemoapp.repositories
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -37,6 +38,8 @@ class UnsplashRepository @Inject constructor(
         .observeFavsChanges()
         .distinctUntilChanged()
         .shareIn(coroutineScope, started = SharingStarted.Eagerly)
+
+    suspend fun getImage(imageId: String) = api.getImage(imageId)
 
     suspend fun addFavorite(imageRoot: ImageRoot) = withContext(Dispatchers.IO) {
         favoritesDataBase.favoritesDAO().addFav(imageRoot)

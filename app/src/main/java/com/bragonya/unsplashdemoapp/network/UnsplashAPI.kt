@@ -15,8 +15,8 @@ interface UnsplashAPI {
         @Query("per_page") pageSize: Int
     ): List<ImageRoot>
 
-    @GET("/photos/{id}")
-    suspend fun getImageDetail(
-        @Path("id") id: String,
+    @GET("/photos/{imageId}")
+    suspend fun getImage(
+        @Path("imageId", encoded = false) imageId: String,
     ): ImageRoot
 }

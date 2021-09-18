@@ -29,4 +29,28 @@ object Fakes {
         ),
         createdAt = "2021-09-17T09:08:57-04:00"
     )
+
+    fun getDummyImageRoot() = ImageRoot(
+        "akdfjas",
+        "#FFFFF",
+        "Portrait in Zurich",
+        null,
+        Urls(
+            "",
+            "",
+            "",
+        ),
+        18,
+        User(
+            "bragonya",
+            "Brayan Yaquian",
+            ProfileImage(
+                "",
+            ),
+            "miportafolio.com",
+            "bragonya",
+            "yaquigol",
+        ),
+        "2021-09-17T09:08:57-04:00"
+    )
 }

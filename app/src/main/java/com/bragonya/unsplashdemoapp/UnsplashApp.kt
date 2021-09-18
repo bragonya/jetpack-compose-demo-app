@@ -1,5 +1,6 @@
 package com.bragonya.unsplashdemoapp
 
+import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.padding
@@ -14,8 +15,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.navArgument
 import com.bragonya.unsplashdemoapp.ui.SharedViewModel
 import com.bragonya.unsplashdemoapp.ui.detail.DetailView
 import com.bragonya.unsplashdemoapp.ui.favorites.FavoritesView
@@ -77,10 +79,11 @@ fun UnsplashApp(sharedViewModel: SharedViewModel){
                 composable(Screen.Favorites.route) { FavoritesView(sharedViewModel, navController) }
                 composable(
                     Screen.Detail.route,
+                    arguments = listOf(navArgument("imageId") { type = NavType.StringType }),
                     enterTransition = { _, _ -> slideInVertically(initialOffsetY = { it / 2 }, animationSpec = tween(500)) },
                     exitTransition = { _, _ -> slideOutVertically(targetOffsetY = { it / 2 }, animationSpec = tween(500)) }
-                ) {
-                    DetailView(actions.upPress)
+                ) { backStackEntry ->
+                    DetailView(actions.upPress, backStackEntry.arguments?.getString("imageId")!!, sharedViewModel)
                 }
             }
         }

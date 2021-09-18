@@ -11,5 +11,5 @@ import com.bragonya.unsplashdemoapp.R
 sealed class Screen(val route: String, @StringRes val resourceId: Int, val icon: ImageVector?) {
     object Images : Screen("images", R.string.images, Icons.Filled.Home)
     object Favorites : Screen("favorites", R.string.favorites, Icons.Filled.Favorite)
-    object Detail : Screen("detail", R.string.detail, null)
+    object Detail : Screen("detail/{imageId}", R.string.detail, null)
 }
