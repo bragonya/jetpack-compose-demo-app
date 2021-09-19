@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.bragonya.unsplashdemoapp.R
 import com.bragonya.unsplashdemoapp.models.ImageRoot
+import com.bragonya.unsplashdemoapp.theme.shimmerHighLight
 import com.bragonya.unsplashdemoapp.ui.composables.FavoriteButton
 import com.bragonya.unsplashdemoapp.ui.composables.InsetAwareTopAppBar
 import com.bragonya.unsplashdemoapp.utils.DateFormatter
@@ -76,6 +77,10 @@ fun SuccessDetailView(
                     imageModel = imageRoot.urls.regularImage,
                     contentDescription = "Image showed",
                     circularRevealedEnabled = true,
+                    shimmerParams = ShimmerParams(
+                        baseColor = MaterialTheme.colors.surface,
+                        highlightColor = shimmerHighLight,
+                    ),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(600.dp),
@@ -120,16 +125,13 @@ fun SuccessDetailView(
                         .padding(start = 30.dp)
                 ) {
                     CoilImage(
-                        imageModel = imageRoot.user.profileImage,
+                        imageModel = imageRoot.user.profileImage.small,
                         contentDescription = "Image showed",
                         circularRevealedEnabled = true,
                         error = painterResource(id = R.drawable.ic_android),
                         shimmerParams = ShimmerParams(
-                            baseColor = MaterialTheme.colors.background,
-                            highlightColor = Color.White,
-                            durationMillis = 350,
-                            dropOff = 0.65f,
-                            tilt = 20f
+                            baseColor = MaterialTheme.colors.surface,
+                            highlightColor = shimmerHighLight,
                         ),
                         modifier = Modifier
                             .clip(CircleShape)

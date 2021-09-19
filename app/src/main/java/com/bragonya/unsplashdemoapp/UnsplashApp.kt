@@ -18,6 +18,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navArgument
+import com.bragonya.unsplashdemoapp.theme.UnsplashTheme
 import com.bragonya.unsplashdemoapp.ui.SharedViewModel
 import com.bragonya.unsplashdemoapp.ui.detail.DetailView
 import com.bragonya.unsplashdemoapp.ui.favorites.FavoritesView
@@ -35,7 +36,7 @@ val items = listOf(
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun UnsplashApp(sharedViewModel: SharedViewModel){
-    MaterialTheme {
+    UnsplashTheme {
         val scaffoldState = rememberScaffoldState()
         val navController = rememberAnimatedNavController()
         Scaffold(

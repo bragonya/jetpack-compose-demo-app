@@ -19,27 +19,25 @@ import com.bragonya.unsplashdemoapp.ui.composables.ItemList
 fun HomeView(
     viewModel: SharedViewModel,
     navController: NavController
-){
-    MaterialTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = Color.LightGray
-        ) {
-            val lazyPages = viewModel.getImages().flow.collectAsLazyPagingItems()
-            LazyColumn {
-                items(lazyPages) { image ->
-                    image?.let {
-                        val isFavorite by viewModel.favsCache.collectAsState()
-                        ItemList(image, isFavorite.containsKey(image.id),
-                            isFavCallback = { value ->
+) {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = Color.LightGray
+    ) {
+        val lazyPages = viewModel.getImages().flow.collectAsLazyPagingItems()
+        LazyColumn {
+            items(lazyPages) { image ->
+                image?.let {
+                    val isFavorite by viewModel.favsCache.collectAsState()
+                    ItemList(image, isFavorite.containsKey(image.id),
+                        isFavCallback = { value ->
                             if (value) {
                                 viewModel.addFavorite(image)
                             } else {
                                 viewModel.removeFavorite(image)
                             }
                         }) {
-                            navController.navigate("detail/${image.id}")
-                        }
+                        navController.navigate("detail/${image.id}")
                     }
                 }
             }

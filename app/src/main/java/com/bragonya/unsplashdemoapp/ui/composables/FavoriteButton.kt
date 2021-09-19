@@ -72,12 +72,10 @@ fun FavoriteButton(
 @Composable
 fun FavoriteButtonPreview() {
     val (isChecked, setChecked) = remember { mutableStateOf(false) }
-    MaterialTheme {
-        Surface {
-            FavoriteButton(
-                isChecked = isChecked,
-                onClick = { setChecked(!isChecked) }
-            )
-        }
+    Surface {
+        FavoriteButton(
+            isChecked = isChecked,
+            onClick = { setChecked(!isChecked) }
+        )
     }
 }

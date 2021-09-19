@@ -23,34 +23,35 @@ import com.bragonya.unsplashdemoapp.ui.composables.SearchView
 fun FavoritesView(
     viewModel: SharedViewModel,
     navController: NavController
-){
-    MaterialTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = Color.LightGray
-        ) {
-            val lazyPages = viewModel.getFavs().collectAsState(emptyList())
-            val searchText = remember { mutableStateOf(TextFieldValue("")) }
-            Column {
-                SearchView(state = searchText)
-                LazyColumn {
-                    items(lazyPages.value.filter { image ->
-                        val text = searchText.value.text
-                        (text.isEmpty()
-                                || image.description?.contains(text, ignoreCase = true) == true
-                                || image.altDescription?.contains(text, ignoreCase = true) == true) || image.user.name.contains(text, ignoreCase = true)
-                    }) { image ->
-                        val isFavorite = viewModel.isFavorite(image)
-                        ItemList(image, isFavorite,
-                            isFavCallback = { value ->
+) {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = Color.LightGray
+    ) {
+        val lazyPages = viewModel.getFavs().collectAsState(emptyList())
+        val searchText = remember { mutableStateOf(TextFieldValue("")) }
+        Column {
+            SearchView(state = searchText)
+            LazyColumn {
+                items(lazyPages.value.filter { image ->
+                    val text = searchText.value.text
+                    (text.isEmpty()
+                            || image.description?.contains(text, ignoreCase = true) == true
+                            || image.altDescription?.contains(
+                        text,
+                        ignoreCase = true
+                    ) == true) || image.user.name.contains(text, ignoreCase = true)
+                }) { image ->
+                    val isFavorite = viewModel.isFavorite(image)
+                    ItemList(image, isFavorite,
+                        isFavCallback = { value ->
                             if (value) {
                                 viewModel.addFavorite(image)
                             } else {
                                 viewModel.removeFavorite(image)
                             }
-                        }){
-                            navController.navigate("detail/${image.id}")
-                        }
+                        }) {
+                        navController.navigate("detail/${image.id}")
                     }
                 }
             }
