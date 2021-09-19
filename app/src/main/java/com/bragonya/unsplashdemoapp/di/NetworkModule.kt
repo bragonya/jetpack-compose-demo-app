@@ -1,5 +1,6 @@
 package com.bragonya.unsplashdemoapp.di
 
+import com.bragonya.unsplashdemoapp.BuildConfig
 import com.bragonya.unsplashdemoapp.common.BASE_URL
 import com.bragonya.unsplashdemoapp.network.UnsplashAPI
 import dagger.Module
@@ -47,7 +48,7 @@ object NetworkModule {
             .newBuilder()
             .addHeader(
                 "Authorization",
-                "Client-ID P8jKd89qU3BsyQP4iShzlPC7RriQbsbC6pQJSAglLm4"
+                "Client-ID ${BuildConfig.UNSPLASH_TOKEN}"
             )
             .build()
         chain.proceed(newRequest)
